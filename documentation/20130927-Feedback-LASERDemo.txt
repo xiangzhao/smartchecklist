@@ -1,0 +1,35 @@
+MockUp Feedback - LASER Meeting - Friday September 27, 2013
+===========================================================
+
+Current Work:
+
+* The favorite was left buttons and right status indicator (4.3)
+
+* (DONE) Step name
+    * Should be the leftmost component
+        * There could possibly be a small status indicator before the step name
+    * Should be aligned with the other step names 
+
+* Finish actions (i.e. optout, complete, terminate)
+    * Could switch from push buttons to radio buttons
+    * (DONE) Should more clearly differentiate the buttons from the status indicators
+    * (REJECTED) Change the text color instead of the background color
+
+* Notes
+    * (DONE) Note "model":
+        * Medical records usually only allow additions and not removals.
+        * Each note should be annotated with the following:
+            * Author
+	    * Timestamp
+	    * Activity (?)
+    * (DONE) Note "view":
+        * Differentiate between being able to read/write versus only read
+    * Can Little-JIL steps modify their artifacts after they have finished (i.e. opted out, completed, terminated)?
+
+* Problem(s)
+    * (DONE) Show the problems as a tooltip, list/tree, in the notes, ...
+    * Link the reporting and recovery of the problems
+
+Future Work:
+
+* Provide support to dictate the notes

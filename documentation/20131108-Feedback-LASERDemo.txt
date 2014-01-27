@@ -1,0 +1,21 @@
+LASER Demo 11/08/2013 - Feedback
+================================
+
+Model:
+-----
+
+- Shuffle
+	* Add non-leaf step that throws and handles exception
+	* Add other exceptions thrown and restart
+
+GUI:
+----
+
+- Remove + from suitecase
+
+- Tooltips for requires button and status indicators should clearly separate items (e.g., bullets, lines, ...)
+
+- Future work
+	* Save history: who performed, notes, and timestamps (Talk to Xiang)
+	* How to view shared info among agents
+

@@ -1,0 +1,68 @@
+Smart Checklist GUI Demo - Friday 9/20/2013
+===================================
+
+FIRST:
+
+- History
+	- (DONE) Add a legend for the colors
+	- Preferences for colors
+	- Keep in mind color blindness
+	- Ask Jenna's for her suggestions
+	- Also use textures (?)
+
+- Names
+	- (DONE) Keep stable - don't move because of buttons or timestamps
+	- Allow wrap (?)
+
+- Buttons
+	- (DONE) Consider different orders of the buttons (all together to the left/right side: complete, notes, failed)
+	- For a single exception, don't bring up the dialog box simply throw that exception.
+	- (DONE) If activity is cancelled, then remove complete button // Rethink color
+
+- ActivityPanel
+	- Group panel use more common arrows (not ones used now)
+	- Leaves: Shrink the size after finished (Concept of fish eye lens); Non-Leaves: Do not collapse
+
+- Hierarchy
+	- Option for whether to show only leaves or non-leaves/leaves
+	- (FIXED) BUG: Inner group panel collapse needs to reclaim space
+
+- Timestamps
+	- Non-leaf steps too
+
+---------------------------------------------------
+
+SECOND:
+
+- Process
+	- Access to glossary for novices
+	- (DONE) Show execution state: posted, started, finished (completed, failed); Possibilities are:
+		- Tab color
+		- Add timestamp
+		- (TO BE FURTHER DUSCUSSED) After finished, collapse panel
+
+- Add descriptions
+	- (DONE) Inputs and outputs: Show types (and values)
+	- Overview for novices
+
+- Hierarchy
+	- Allow user to annotate non-leaves with whether to include/exclude
+
+- Timestamps
+	- Add clock time to upper left/right corner
+	- Preferences for timestamps (show/hide)
+	- Which ones to log: posted, started, finished (completed, failed)
+	- Sort by the timestamps
+	- Warning count down/up timers
+
+- (DONE) Artifacts:
+	- Case 1: List inputs and outputs similar to how the narrator does; Show types (and values)
+	- Case 2: External dialog box to enter outputs // Not the Smart Checklist's responsibility
+
+---------------------------------------------------
+
+FUTURE WORK: 
+	Beth mentioned could also help team coordination (others can view) as opposed to single agent checklist (only agent can view). 
+	She also says show only the "important" activities and problems that occurred.
+
+	Lee - For each step, are there a list of common notes to select from?

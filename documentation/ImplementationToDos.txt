@@ -1,0 +1,29 @@
+- class ExceptionNamesFormatter
+	* Refactor the class
+		- Make it more general since the name formatting functionality is used not only for exceptions
+		- (DONE) Move it to a separate utility package.
+	* Support abbreviations--e.g., "patientID" currently will be formatted as "patient I D"
+	
+- (DONE) Refactor the functionality for creating tooltip text into a separate utility class.
+
+- (Perhaps) refactor the functionality for determining colors into a separate class.
+
+- class LegandDialog
+    * Add more helper method such as populateButtonSubsection
+    * Add a field for the Font used by the explanations
+    
+- class ImageManager // See Visual-JIL
+    * (DONE) Move constant declarations here  
+    * Load and store images
+    
+- Notes
+	* Make a new note widget that can be used by ActivityPanel and ProcessHeaderPanel
+	
+- Artifact editors
+	* Map from artifact type to artifact editor (similar to how web browsers support viewers/editors)
+	
+- class SmartChecklistGUI hooking up the quit method
+    * (DONE) Close is hooked up to the quit method.
+	* The toolbar's quit menu item needs to be hooked up to the quit method.
+	* There is a bug with how the tray's quit menu item was hooked up to the quit method.
+	* NOTE: Carbon seems to need special processing for the above to work appropriately.

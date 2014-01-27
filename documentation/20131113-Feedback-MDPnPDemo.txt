@@ -1,0 +1,65 @@
+Smart Checklist Group Meeting - Wed. Nov. 13, 2013
+===================================================
+
+Attendees: Julian, Victoria (resident), Jeff (MDPnP SW Eng), Diego (MDPnP SW Eng), Steven (Docbox Biomed Eng),
+           Lee, Lori, George, Stefan, Heather, Lizzy
+
+Process modeling:
+----------------
+* (DONE) Rename "assess patient hazards" as "assess infusion-related hazards"
+* Categorize artifacts by source (e.g., EMR, electronic order entry system, paper, ...)
+* May want to elaborate "assess infusion-related hazards" and "perform baseline assessment test" based on contraindications
+	- If there are hazards, then could use reactions to ensure that certain follow up is performed in a timely manner
+* There are two common ways to set the pump settings
+	1) (set pump settings; confirm pump settings)+; start pump
+	2) set pump settings (with approximate values); confirm pump settings; start pump; 
+	   set pump settings (with concrete values)
+	   // Could add an annotation to document the approximate values
+
+GUI:
+---
+
+Patient info panel:
+* LEFT - Add gender, weight
+	- For infusion therapy, add allergies (one of not entered, none, or itemized list)
+* RIGHT - Could add monitor info (either streaming vitals or Dave's summary view)
+
+Activities:
+* Filter the activities as you would a task or TODO list
+* Add a complete button to a non-leaf that when pressed batch performs its leaves  
+* For an activity that interacts with a device (e.g. enter pump settings),
+  have that activity include an image of that device
+* Shrink leaf activities that have already been performed  
+* How to clearly show relationships among activities
+	- Possibly thicken the border of the non-leaf activities that depicts the composition
+  	  of the activities (but that could clutter the view)
+	- Sequencing:
+		* For a parallel step p, could have its activity title be s (perform the following in any order)
+		* For a choice step c, could have its activity title be c (select one among the following)
+	- Consider how to show priorities among the activities
+
+Notes:
+* Notes and tooltip views are too similar to each other
+
+Timestamps:
+* Store timestamps for posted, started, and finished
+	- For now, only show finished
+	
+Documentation:
+* Automatically generate a process report (include historical data such as timestamps)
+
+Artifacts:
+* Add a MedicalDevice interface with methods: getName, getUID, getImage
+	- Any human performer that uses a medical device can then be shown the image
+* MDPnP could give us access to the following
+	- EHR data from DOD
+	- Streaming data from devices
+
+Evaluation plan:
+---
+
+1) In parallel, iteratively refine the process model and incrementally build the GUI
+2) Have Julian review the process model
+3) Get feedback from focus group of domain experts - Feb. 2014
+ 	a) Need at least two months notice for domain experts
+ 	

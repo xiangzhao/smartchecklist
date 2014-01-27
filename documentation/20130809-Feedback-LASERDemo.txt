@@ -1,0 +1,21 @@
+LASER meeting August 9, 2013
+============================
+
+Feedback
+--------
+
+* Be careful about activity names; Currently using step names; Could use full documentation names
+	* Could use full documentation description as tooltip
+* (DONE) Add legend for icons
+* (DONE) Reconsider icons for fail (exception thrown) - try thunderbolt, failed timestamp
+* Activity panel new layout
+	* (DONE) Put buttons for done and failed together
+	* (DONE) If no exceptions then do not add failed button
+* (DONE) For FailedDialog, show each exception class name "p1.p2.MyException" as title case exception simple name "My Exception"
+
+Further Demos
+-------------
+
+1) Show Beth and Jenna
+2) Show MD PnP group beginning of October
+3) Show domain experts

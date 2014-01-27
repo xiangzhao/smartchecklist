@@ -1,0 +1,38 @@
+Notes from Smart Checklist demo, LASER meeting 2013-10-25
+=========================================================
+
+Current Work
+------------
+
+PROCESS:
+    - (DONE) Add process status indicator (e.g., icons, progress bar)
+	- Could collapse the process panel after finished
+
+ACTIVITY:
+    - Computing layout for long step names
+    	- Could scale, wrap, elide then use tooltip, short names vs. long names
+	- (DONE) show the alternative the agent selected at a decision point
+	- (DONE) show the exception/problem that occurred
+	- simple annotation to decide which intermediate steps to show
+	- (DONE) remove buttons after activity finishes
+    
+(DONE) NOTES: 
+	- (DONE) Make text of notes different from note title
+	- (DONE) Carefully consider how right indentation affects note button alignment
+
+ARTIFACTS:
+	- (DONE, simple cases) Support three cases: input/output lists (like narrator), decision node, form-based
+	
+(DONE) PROCESS EXAMPLE:
+	- (DONE) Find example of parallelism and/or shuffle
+	- (DONE) Add it to the process definition, make it executable
+
+Future Work
+-----------
+
+UNDO: Clicked on wrong button
+	- One step undo
+		* maybe put something on the time stamp of the last finished step
+		* maybe make step status indicator of only last finished step in color (e.g., green, red), rest grayscale (e.g., dark grey)
+		* add support for going to last finished step
+	- "Invisible exception" (mechanism for making undo work with interpreter)

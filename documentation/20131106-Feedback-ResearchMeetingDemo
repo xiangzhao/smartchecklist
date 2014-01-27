@@ -1,0 +1,45 @@
+Feedback from George, Lori, and Lee 2013-11-06
+===================================
+
+Process model
+-------------
+
+* Shuffle
+  - Parallel versus iterative choice
+  - (DONE) At least one substep should throw an exception and then have a handler for that exception
+
+* Human performer interactions with automated agents
+  - Consider different models and views: Should have steps for human performer and automated agent
+
+GUI
+---
+
+Current work:
+
+* (DONE) Process status indicator
+  - Move to the right side
+  - Add timestamp
+  - Mouse over brings up tooltip
+  - Create a separate widget for the status indicator image(s) and tooltip.
+
+* Activities
+  - Reduce size of leaf activity panels that have finished (or give an option to user to make them thinner)
+  - Add activity status indicator and notes for non-leaf activity panels
+
+* Artifacts
+  - (DONE, simple case) Show inputs: Add icon, Mouse over brings up tooltip
+  - (DONE) After infusion pump GUI is opened, leave it open
+  - Communication steps could have a message template (See Camille's work)
+    - e.g., "contact doctor for new treatment" step
+
+ Future work:
+
+* Shuffle
+  - Could show each substep once; It does not have to show retractions and reposts of that substep
+  
+* For now, past and current steps shown
+  - Future steps should be shown too
+
+* For now, the smart checklist supports single agent with a single process
+  - Single agent with multiple processes (e.g, patient or nurse)
+  - Multiple agents with a single process (e.g., blood transfusion, UCSF)

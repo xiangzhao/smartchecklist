@@ -1,0 +1,22 @@
+* Include how much process hierarchy? none, major phases, user-defined annotation, all
+
+* Support for real time (e.g., countdown)
+
+* Shuffle in the case of exceptions
+  - Could show each substep once; It does not have to show retractions and reposts of that substep
+
+* For now, past and current steps shown
+  - Future steps should be shown too
+
+* For now, the smart checklist supports single agent with a single process
+  - Single agent with multiple processes (e.g, patient or nurse)
+  - Multiple agents with a single process (e.g., blood transfusion, UCSF)
+  		* One agent can delegate activities to others, but maintains responsibility for the process (e.g., ask someone else to replace leaky line, keep doing other pump safety checks meanwhile)
+  		* Distinguish between activities that are manually performed, automatically performed, performed by someone else (delegated)
+  
+* Prospection could compute the following:
+  - Forward dominators of activities (perhaps including time estimates)
+  - All artifacts needed for a given (sub-)process
+  		* optional vs. required artifacts
+  - Compute which subprocesses can be delegated (i.e. there are no dependencies)
+  

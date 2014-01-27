@@ -1,0 +1,32 @@
+Notes from Smart Checklist demo, LASER meeting 2013-10-11
+
+(DONE) Combine/merge two views:
+	- the columns from the table-tree view are nice
+	- the indentation (including indentation of color boxes) from the PGroup view is nice
+
+(DONE) Note button:
+	- have different icon for notes -- read-only, write-only, note icon that shows if something has been written
+	- show note upon mouse hover
+	- open note dialog box close to the note button
+	- enable note button on finished steps (for now, keep it editable)
+
+(DONE) Parallel process example:
+	- add exceptions for next Friday
+
+(DONE) Legend:
+	- align text
+	- "Deactivated" or "withdrawn" (no need to say "elsewhere ...") for canceled steps
+
+(DONE) Other:
+	- makes the Xs for status indicator and fail button the same shape
+	- if possible, make the height of activity panels smaller, so that more activities will fit on the screen
+	- make the background color of all panels in the activity panel the same (maybe we can have a debugging flag that allows us to show different background colors in debugging mode)
+
+User preferences:
+	- whether to automatically collapse finished steps
+
+Longer term questions/issues:
+	- how to show things done by different agents
+	- (REJECTED) for table tree view
+		- issue: time stamp on sub steps or just higher-level step
+
