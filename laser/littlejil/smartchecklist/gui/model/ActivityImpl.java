@@ -63,7 +63,7 @@ public class ActivityImpl implements Activity, AgendaItemListener
 		this.state_ = this.generateActivityState();
 		this.children_ = new ArrayList<Activity>();
 		try {
-			this.isLeaf_ = this.agendaItem_.getChildren().isEmpty();
+			this.isLeaf_ = this.agendaItem_.getStep().isLeaf();
 		}
 		catch (AMSException ae) {
 			throw new RuntimeException(ae);

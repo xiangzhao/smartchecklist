@@ -10,6 +10,7 @@ import laser.littlejil.smartchecklist.gui.model.ActivityFilter;
 import laser.littlejil.smartchecklist.gui.model.AllActivityFilter;
 import laser.littlejil.smartchecklist.gui.model.OnlyLeavesActivityFilter;
 import laser.littlejil.smartchecklist.gui.model.Process;
+import laser.littlejil.smartchecklist.gui.model.RefactoringActivityFilter;
 
 
 public class ProcessEventHandler extends ItemHandlerAdapter
@@ -29,7 +30,8 @@ public class ProcessEventHandler extends ItemHandlerAdapter
 			this.activityFilter_ = new OnlyLeavesActivityFilter();	
 		}
 		else {
-			this.activityFilter_ = new AllActivityFilter();	
+			this.activityFilter_=new RefactoringActivityFilter();
+//			this.activityFilter_ = new AllActivityFilter();	
 		}
 		this.processView_ = gui;
 		this.agendaItem_ = item;
