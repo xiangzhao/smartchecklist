@@ -37,8 +37,10 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 //import org.eclipse.swt.events.SelectionAdapter;
 //import org.eclipse.swt.events.SelectionEvent;
@@ -193,6 +195,13 @@ public class ActivityPanel implements PropertyChangeListener
     				activityLabel_.setFont(newFont);    			
     				activityLabel_.pack();
     				//System.out.println("Created label.");
+    				
+    				activityLabel_.addListener(SWT.MouseDown, new Listener(){
+    					public void handleEvent(Event event){
+    						AgendaItemWindow agendaItemWindow = new AgendaItemWindow();
+    						agendaItemWindow.open();
+    					}
+    				});
     				
     				// Create the panel that contains the icon/button for required artifacts/resources
     				requiredInputsPanel_ = new Composite(activityPanelView_, SWT.NONE);
