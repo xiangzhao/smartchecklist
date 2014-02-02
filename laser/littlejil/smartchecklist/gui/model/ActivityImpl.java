@@ -181,8 +181,8 @@ public class ActivityImpl implements Activity, AgendaItemListener
 		return mode;
 	}
 	
-	protected AgendaItem getAgendaItem() {
-		return this.agendaItem_;
+	public laser.juliette.runner.ams.AgendaItem getAgendaItem() {
+		return (laser.juliette.runner.ams.AgendaItem) this.agendaItem_;
 	}
 	
 	//

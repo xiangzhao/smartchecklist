@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import laser.juliette.runner.ams.AgendaItem;
+
 
 /** 
  * The Activity class represents TODO.
@@ -75,4 +77,6 @@ public interface Activity
 	public void addPropertyChangeListener(PropertyChangeListener listener);
 	
 	public void removePropertyChangeListener(PropertyChangeListener listener);
+	
+	public AgendaItem getAgendaItem();
 }
