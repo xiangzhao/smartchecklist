@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
 
+import laser.juliette.ams.AMSException;
 import laser.littlejil.smartchecklist.gui.model.Activity;
 import laser.littlejil.smartchecklist.gui.model.ActivityImpl;
 import laser.littlejil.smartchecklist.gui.model.ActivityState;
@@ -200,7 +201,9 @@ public class ActivityPanel implements PropertyChangeListener
     					public void handleEvent(Event event){
     						AgendaItemWindow agendaItemWindow = new AgendaItemWindow(activity_.getAgendaItem());
     						System.out.println(agendaItemWindow.getProcedureInstanceNode().get(0));
-    						agendaItemWindow.open();
+    						
+								agendaItemWindow.open();
+							
     					}
     				});
     				
