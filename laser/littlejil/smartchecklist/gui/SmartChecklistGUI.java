@@ -16,7 +16,7 @@ public class SmartChecklistGUI {
 
 	public static final String TITLE = "Smart Checklist";
 	public static final int GUI_WIDTH = 800;
-	public static final int GUI_HEIGHT = 400;
+	public static final int GUI_HEIGHT = 600;
 
 	// Constants to be used as keys in System property (key, value) pairs
 	public static final String DEBUGGING_MODE = "smartchecklist.debuggingmode";

@@ -1,5 +1,6 @@
 package laser.littlejil.smartchecklist.gui;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -24,10 +25,15 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import artifacts.PackageFragmentRoot;
+
+import laser.ddg.AbstractProcedureInstanceNode;
+import laser.ddg.DataInstanceNode;
 import laser.ddg.ProcedureInstanceNode;
 import laser.ddg.ProvenanceData;
 import laser.juliette.ams.AMSException;
 import laser.juliette.ddgbuilder.DDGBuilder;
+import laser.juliette.ddgbuilder.StepInstanceNode;
 import laser.juliette.ddgbuilder.StepReference;
 import laser.juliette.runner.ams.AgendaItem;
 
@@ -42,16 +48,19 @@ public class AgendaItemWindow {
 	/**
 	 * Launch the application.
 	 * @param args
+	 * @throws AMSException 
 	 */
-	public void open() {
+	public void open() throws AMSException {
 		Display display = Display.getDefault();
 		Shell shell = new Shell (display);
 		shell.setLayout(new FillLayout());
-		shell.setText("History of StepName");
+		shell.setText("History of " + this.agendaItem_.getStep().getName());
 		ExpandBar bar = new ExpandBar (shell, SWT.V_SCROLL);
 		Image image = display.getSystemImage(SWT.ICON_INFORMATION);
 		
 		ProcedureInstanceNode pin = getProcedureInstanceNode().get(0);
+		DDGBuilder ddgBuilder = (DDGBuilder) agendaItem_.getDdgbuilder();
+		
 		
 		// First item
 		Composite composite = new Composite (bar, SWT.NONE);
@@ -63,17 +72,27 @@ public class AgendaItemWindow {
   
 		createTwoColumnTitle(composite, shell.getDisplay(), "Input Parameters");
 		
-		Iterator<String> it = pin.inputParamNames();
+		Iterator<DataInstanceNode> it = pin.inputParamValues();
 		while(it.hasNext()){
-			createParameterRow(composite, shell.getDisplay(), it.next(), "value");
+			DataInstanceNode din = it.next();
+			createParameterRow(composite, shell.getDisplay(), din.getName(), din.getValue().toString());
 		}
 		
 		createTwoColumnSeparator(composite);
 		
 		createTwoColumnTitle(composite, shell.getDisplay(), "Output Parameters");
-		it = pin.outputParamNames();
+		
+		it = pin.outputParamValues();
 		while(it.hasNext()){
-			createParameterRow(composite, shell.getDisplay(), it.next(), "value");
+			DataInstanceNode din = it.next();
+			Serializable s = din.getValue();
+			if(s instanceof PackageFragmentRoot){
+				PackageFragmentRoot pfr = (PackageFragmentRoot)s;
+				for(String str : pfr.getCompilationUnitList()){
+					pfr.getCompilationUnitContents().get(str); //class content
+				}
+			}
+			createParameterRow(composite, shell.getDisplay(), din.getName(), din.getValue().toString());
 		}
 		
 		createTwoColumnSeparator(composite);
@@ -83,7 +102,10 @@ public class AgendaItemWindow {
 		
 		
 		ExpandItem item0 = new ExpandItem (bar, SWT.NONE, 0);
-		item0.setText("*Completed* at *2/3/14 5:54:00* by *NameOfAgent*");
+	
+		AgendaItem ai = (AgendaItem) ddgBuilder.getAgendaItemMapper().getItem((StepInstanceNode)pin);
+		
+		item0.setText(ai.getState() + " at "+ ((AbstractProcedureInstanceNode)pin).getCreatedTime() +" by " + ai.getAgenda().getName());
 		item0.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item0.setControl(composite);
 		item0.setImage(image);
