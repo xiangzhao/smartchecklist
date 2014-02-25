@@ -6,17 +6,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import laser.ddg.ProcedureInstanceNode;
+import laser.ddg.ProvenanceData;
 import laser.juliette.ams.AMSException;
 import laser.juliette.ams.AgendaItem;
 import laser.juliette.ams.AgendaItemEvent;
 import laser.juliette.ams.AgendaItemListener;
 import laser.juliette.ams.IllegalTransition;
 import laser.juliette.ams.UnknownParameter;
+import laser.juliette.ddgbuilder.DDGBuilder;
+import laser.juliette.ddgbuilder.StepReference;
 import laser.lj.Binding;
 import laser.lj.InterfaceDeclaration;
 import laser.lj.InterfaceDeclarationSet;
@@ -634,6 +639,35 @@ public class ActivityImpl implements Activity, AgendaItemListener
 		}
 		
 		return thrownExceptions;
+	}
+
+	// get a list of ProcedureInstanceNodes
+	public ArrayList<ProcedureInstanceNode> getProcedureInstanceNodes() {
+		ArrayList<ProcedureInstanceNode> res = new ArrayList<ProcedureInstanceNode>();
+		DDGBuilder ddgBuilder = (DDGBuilder) agendaItem_.getDdgbuilder();
+		ProvenanceData pd = ddgBuilder.getProvData();
+		Iterator<ProcedureInstanceNode> pinIter = pd.pinIter();
+		while (pinIter.hasNext()) {
+			ProcedureInstanceNode pin = pinIter.next();
+			if (!pin.getType().equals("Leaf"))
+				continue;
+			if (pin.getProcedureDefinition() instanceof StepReference) {
+				StepReference sr = (StepReference) pin.getProcedureDefinition();
+				try {
+					if (sr.getStepDef().getStepDeclaration()
+							.equals(agendaItem_.getStep().getStepDeclaration())) {
+						res.add(pin);
+					}
+				} catch (UnsupportedOperationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (AMSException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return res;
 	}
 	
 	//

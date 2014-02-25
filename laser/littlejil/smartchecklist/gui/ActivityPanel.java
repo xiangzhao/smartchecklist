@@ -199,7 +199,7 @@ public class ActivityPanel implements PropertyChangeListener
     				
     				activityLabel_.addListener(SWT.MouseDown, new Listener(){
     					public void handleEvent(Event event){
-    						AgendaItemWindow agendaItemWindow = new AgendaItemWindow(activity_.getAgendaItem());
+    						AgendaItemWindow agendaItemWindow = new AgendaItemWindow(activity_);
 							try {
 								agendaItemWindow.open();
 							} catch (AMSException e) {
@@ -314,7 +314,9 @@ public class ActivityPanel implements PropertyChangeListener
     				activityNoteButton_.setLayoutData(actNoteBtnGridData);
     				activityNoteButton_.addMouseListener(new MouseAdapter() {
     					public void mouseDown(MouseEvent e) {
-    						editNote();
+    						System.out.println("Diff Viewer Requested!");
+    						DiffViewerWindow diffViewerWindow = new DiffViewerWindow(activity_);
+    						diffViewerWindow.open();
     					}
     				});
     				activityNoteButton_.pack();
