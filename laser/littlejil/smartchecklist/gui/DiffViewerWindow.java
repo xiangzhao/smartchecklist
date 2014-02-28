@@ -14,6 +14,7 @@ import laser.juliette.ams.AMSException;
 import laser.juliette.ams.AgendaItem;
 import laser.juliette.ddgbuilder.DDGBuilder;
 import laser.littlejil.smartchecklist.gui.model.Activity;
+import laser.littlejil.smartchecklist.gui.utils.DiffUtil;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -127,16 +128,16 @@ public class DiffViewerWindow {
 			if(incomingFileContents.equals(outgoingFileContents)){
 				changedFilenamesIt.remove();
 			} else {
-				this.diffs.put(changedFilename, diff(changedFilename, incomingFileContents, outgoingFileContents));
+				this.diffs.put(changedFilename, DiffUtil.diff(changedFilename, incomingFileContents, outgoingFileContents));
 			}
 		}
 		for(String addedFilename : this.addedFilenames){
 			String fileContents = pfrOut.getCompilationUnitContents().get(addedFilename);
-			this.diffs.put(addedFilename, diff(addedFilename, "", fileContents));
+			this.diffs.put(addedFilename,  DiffUtil.diff(addedFilename, "", fileContents));
 		}
 		for(String removedFilename : this.removedFilenames){
 			String fileContents = pfrIn.getCompilationUnitContents().get(removedFilename);
-			this.diffs.put(removedFilename, diff(removedFilename, fileContents, ""));
+			this.diffs.put(removedFilename,  DiffUtil.diff(removedFilename, fileContents, ""));
 		}
 		//diffs is now initialized with the diffs of the changed files, added files, and removed files
 	}
@@ -213,35 +214,8 @@ public class DiffViewerWindow {
 			}
 		}
 	}
-
-
-	//extract this to a diff util class
-	//params: filename, before contents, after contents
-	public String diff(String filename, String file1, String file2){
-		Scanner scan1 = new Scanner(file1);
-		Scanner scan2 = new Scanner(file2);
-
-		List<String> file1list = new LinkedList<String>();
-		while(scan1.hasNextLine()){
-			file1list.add(scan1.nextLine());
-		}
-
-		List<String> file2list = new LinkedList<String>();
-		while(scan2.hasNextLine()){
-			file2list.add(scan2.nextLine());
-		}
-
-		Patch patch = DiffUtils.diff(file1list, file2list);
-
-		List<String> unified = DiffUtils.generateUnifiedDiff(filename, filename, file1list, patch, 3);
-
-		String ret = "";
-		for(String str : unified){
-			ret += str + "\r\n";
-		}
-		return ret;
-	}
 	
+	//used for debugging
 	public void print(){
 		System.out.println();
 		try {

@@ -5,7 +5,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -26,7 +25,7 @@ public class SmartChecklistGUI {
 	 * The main window of the smart checklist application
 	 */
 	private Shell shell_;
-	private StepInfoPanel patientInfoPanel_;
+	private StepInfoPanel stepInfoPanel_;
 	private ProcessPanel processPanel_;
 
 	/**
@@ -44,13 +43,14 @@ public class SmartChecklistGUI {
 		this.shell_.setText(TITLE);
 		this.shell_.setMinimumSize(GUI_WIDTH, GUI_HEIGHT);
 		this.shell_.setLayout(new GridLayout());
-		this.patientInfoPanel_ = new StepInfoPanel(this);
+		this.stepInfoPanel_ = new StepInfoPanel(this);
 		this.processPanel_ = new ProcessPanel(this);
-		createHelpMenu();
+		createHelpMenu(); // extract this into its own class?
 		this.shell_.pack();
 		MenuItem quitMenuItem = this.getQuitMenuItem();
 		if (quitMenuItem != null) {
 			quitMenuItem.addSelectionListener(new SelectionAdapter() {
+				@SuppressWarnings("unused")
 				public void selectedWidget(SelectionEvent se) {
 					quit();
 				}
@@ -71,13 +71,14 @@ public class SmartChecklistGUI {
 		this.shell_.setText(TITLE);
 		this.shell_.setMinimumSize(GUI_WIDTH, GUI_HEIGHT);
 		this.shell_.setLayout(new GridLayout());
-		this.patientInfoPanel_ = new StepInfoPanel(this);
+		this.stepInfoPanel_ = new StepInfoPanel(this);
 		this.processPanel_ = new ProcessPanel(this, eventManager);
 		createHelpMenu();
 		this.shell_.pack();
 		MenuItem quitMenuItem = this.getQuitMenuItem();
 		if (quitMenuItem != null) {
 			quitMenuItem.addSelectionListener(new SelectionAdapter() {
+				@SuppressWarnings("unused")
 				public void selectedWidget(SelectionEvent se) {
 					quit();
 				}
@@ -112,7 +113,6 @@ public class SmartChecklistGUI {
 	}
 
 	public void initialize(String agendaName) {
-		//HACK: The patient info should be looked up
 		this.processPanel_.initialize(agendaName);
 	}
 
@@ -153,6 +153,7 @@ public class SmartChecklistGUI {
 		display.dispose();
 	}
 
+	//might want to refactor into its own class
 	private void createHelpMenu()
 	{
 		// Create the bar menu
