@@ -1,40 +1,30 @@
 package laser.littlejil.smartchecklist.gui;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 import artifacts.PackageFragmentRoot;
 
 import laser.ddg.AbstractProcedureInstanceNode;
 import laser.ddg.DataInstanceNode;
 import laser.ddg.ProcedureInstanceNode;
-import laser.ddg.ProvenanceData;
 import laser.juliette.ams.AMSException;
 import laser.juliette.ddgbuilder.DDGBuilder;
 import laser.juliette.ddgbuilder.StepInstanceNode;
-import laser.juliette.ddgbuilder.StepReference;
 import laser.juliette.runner.ams.AgendaItem;
 import laser.littlejil.smartchecklist.gui.model.Activity;
 
@@ -119,7 +109,7 @@ public class AgendaItemWindow {
 			}
 		}
 		image.dispose();
-		display.dispose();
+		shell.dispose();
 	}
 
 	public static void createParameterRow(Composite parent, Display display, String parameterName, String parameterValue){

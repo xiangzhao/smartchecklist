@@ -8,6 +8,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 
 
@@ -27,6 +28,7 @@ public class PatientInfoPanel
 	private Label ageLabelValue_;
 	private Label birthdateLabelValue_;
 	private Label MRNLabelValue_;
+	private List filenames_;
 	
 	
 	public PatientInfoPanel(SmartChecklistGUI gui) {
@@ -38,23 +40,10 @@ public class PatientInfoPanel
 		this.infoPanel_.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		this.infoPanel_.setSize(SmartChecklistGUI.GUI_WIDTH - 50, 50);
 		this.infoPanel_.setLayout(new GridLayout(2, false));
-		// First column
-		this.photoLabel_ = new Label(this.infoPanel_, SWT.NONE);
-		// Second column
-		this.rightSubpanel_ = new Composite(this.infoPanel_, SWT.NONE);
-		this.rightSubpanel_.setLayout(new GridLayout(1, true));
-		// The full name label's text should be twice as large as the other labels
-		this.fullNameLabel_ = new Label(this.rightSubpanel_, SWT.BORDER);
-		FontData groupFontData = this.infoPanel_.getFont().getFontData()[0];
-		Font fullNameFont = new Font(this.infoPanel_.getFont().getDevice(), groupFontData.getName(), groupFontData.getHeight() * 2, groupFontData.getStyle());
-		this.fullNameLabel_.setFont(fullNameFont);		
-		// The label names should be shown in bold.
-		Font labelNameFont = new Font(this.infoPanel_.getFont().getDevice(), groupFontData.getName(), groupFontData.getHeight(), SWT.BOLD);		
-		this.genderLabelValue_ = this.createLabelSubpanel(this.rightSubpanel_, GENDER_PREFIX, labelNameFont);		
-		this.birthdateLabelValue_ = this.createLabelSubpanel(this.rightSubpanel_, BIRTHDATE_PREFIX, labelNameFont);		
-		this.ageLabelValue_ = this.createLabelSubpanel(this.rightSubpanel_, AGE_PREFIX, labelNameFont);
-		this.MRNLabelValue_ = this.createLabelSubpanel(this.rightSubpanel_, MRN_PREFIX, labelNameFont);
-		this.setPatientInfo(null);
+		
+		this.filenames_ = new List(this.infoPanel_, SWT.BORDER);
+		this.filenames_.setBounds(0, 0, 144, 275);
+		this.filenames_.add("first string");
 		
 		System.out.println("Created PatientInfoPanel.");
 	}

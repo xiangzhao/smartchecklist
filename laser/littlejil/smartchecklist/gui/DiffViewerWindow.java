@@ -1,4 +1,5 @@
 package laser.littlejil.smartchecklist.gui;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 
 import laser.ddg.DataInstanceNode;
 import laser.ddg.ProcedureInstanceNode;
+import laser.juliette.ams.AMSException;
 import laser.juliette.ams.AgendaItem;
 import laser.juliette.ddgbuilder.DDGBuilder;
 import laser.littlejil.smartchecklist.gui.model.Activity;
@@ -31,100 +33,127 @@ public class DiffViewerWindow {
 	//map from changedFilename to diff
 	private HashMap <String,String> diffs;
 	private List<String> changedFilenames;
+	private List<String> addedFilenames;
+	private List<String> removedFilenames;
 	private Activity activity_;
-	private boolean changes;
 
 	public DiffViewerWindow(Activity activity){
-		System.out.println("started making the diffviewer");
 		this.activity_ = activity;
-		//get the agenda item associated with the activity.
+
 		AgendaItem ai = this.activity_.getAgendaItem();
 		DDGBuilder ddgBuilder = (DDGBuilder) ai.getDdgbuilder();
-
-		//get the procedure instance node associated with the agenda item.
 		ProcedureInstanceNode pin = ddgBuilder.getAgendaItemMapper().getLastPIN(ai);
 
-		//get package fragment roots from the in and out data instance nodes.
 		PackageFragmentRoot pfrIn = null;
 		PackageFragmentRoot pfrOut = null;
 
 		Iterator<DataInstanceNode> itIn = pin.inputParamValues();
 		while(itIn.hasNext()){
 			DataInstanceNode din = itIn.next();
-			if(!(din instanceof PackageFragmentRoot)){
-				continue;
-			} else {
-				pfrIn = (PackageFragmentRoot)din;
+			Serializable dinValue = din.getValue();
+			if(dinValue instanceof PackageFragmentRoot){
+				pfrIn = (PackageFragmentRoot)dinValue;
+				//assumption : at most one package fragment root per data instance node
 				break;
+			} else {
+				continue;
 			}
 		}
 
-		Iterator<DataInstanceNode> itOut = pin.inputParamValues();
+		Iterator<DataInstanceNode> itOut = pin.outputParamValues();
 		while(itOut.hasNext()){
 			DataInstanceNode din = itOut.next();
-			if(!(din instanceof PackageFragmentRoot)){
-				continue;
-			} else {
-				pfrOut = (PackageFragmentRoot)din;
+			Serializable dinValue = din.getValue();
+			if(dinValue instanceof PackageFragmentRoot){
+				pfrOut = (PackageFragmentRoot)dinValue;
+				//assumption : at most one package fragment root per data instance node
 				break;
+			} else {
+				continue;
 			}
 		}
 		
-		System.out.println("got the pfrs in the diffviewer");
-
-
+		//debugging prints
+		if(pfrIn == null){
+			System.err.println("pfrIn is null");
+		}
+		if(pfrOut == null){
+			System.err.println("pfrOut is null");
+		}
+		
 		//determine changes from incoming pfr and outgoing pfr
 		//for each file:
 		//the file exists in input and output OR
 		//the file exists in input and not in output OR
 		//the file exists in output and not in input
-
-		//uniqueIn refers to all files which came in but were deleted
-		HashSet<String> uniqueIn = null;
-		//uniqueOut refers to all files which were create by the procedureInstanceNode (came out but not in)
-		HashSet<String> uniqueOut = null;
-		//commonFiles refers to all files which came both in and out
-		HashSet<String> commonFiles = null;
-
-		if(pfrIn == null || pfrOut == null){
-			changes = false;
+		
+		List<String> filesIn;
+		if(pfrIn == null){
+			filesIn = new ArrayList<String>();
 		} else {
-			uniqueIn = new HashSet<String>(pfrIn.getCompilationUnitList());
-			uniqueIn.removeAll(pfrOut.getCompilationUnitList());
-
-			uniqueOut = new HashSet<String>(pfrOut.getCompilationUnitList());
-			uniqueOut.removeAll(pfrIn.getCompilationUnitList());
-
-			commonFiles = new HashSet<String>(pfrIn.getCompilationUnitList());
-			commonFiles.retainAll(pfrOut.getCompilationUnitList());
-
-
-			//now loop through and show differences. not sure how to show that a file was created or deleted...
-			//for now just deal with common files.
-			this.changedFilenames = new ArrayList<String>(commonFiles);
-			if(this.changedFilenames.size() == 0){
-				this.changes = false;
-			} else {
-				for(String changedFilename : this.changedFilenames){
-					//TODO: might want to check if they're equal, and not include them
-					String incomingFileContents = pfrIn.getCompilationUnitContents().get(changedFilename);
-					String outgoingFileContents = pfrOut.getCompilationUnitContents().get(changedFilename);
-					this.diffs.put(changedFilename, diff(changedFilename, incomingFileContents, outgoingFileContents));
-				}
-				//diffs is now initialized with the diffs of the changed files
-			}
+			filesIn = pfrIn.getCompilationUnitList();
+		}
+		
+		List<String> filesOut;
+		if(pfrOut == null){
+			filesOut = new ArrayList<String>();
+		} else {
+			filesOut = pfrOut.getCompilationUnitList();
 		}
 
+		//removedFilenames refers to all files which came in but were deleted
+		HashSet<String> uniqueIn = new HashSet<String>(filesIn);
+		uniqueIn.removeAll(filesOut);
+		this.removedFilenames = new ArrayList<String>(uniqueIn);
+
+		//addedFilenames refers to all files which were create by the procedureInstanceNode (came out but not in)
+		HashSet<String> uniqueOut = new HashSet<String>(filesOut);
+		uniqueOut.removeAll(filesIn);
+		this.addedFilenames = new ArrayList<String>(uniqueOut);
+		
+		//changedFilenames refers to all files which came both in and out
+		HashSet<String>commonFiles = new HashSet<String>(filesIn);
+		commonFiles.retainAll(filesOut);
+		this.changedFilenames = new ArrayList<String>(commonFiles);
+
+		//now populate this diffs hashmap by looping through changed files, added files, and removed files
+		this.diffs = new HashMap<String,String>();
+		Iterator<String> changedFilenamesIt = this.changedFilenames.iterator();
+		while(changedFilenamesIt.hasNext()){
+			String changedFilename = changedFilenamesIt.next();
+			String incomingFileContents = pfrIn.getCompilationUnitContents().get(changedFilename);
+			String outgoingFileContents = pfrOut.getCompilationUnitContents().get(changedFilename);
+			//do not include them if there were no changes
+			if(incomingFileContents.equals(outgoingFileContents)){
+				changedFilenamesIt.remove();
+			} else {
+				this.diffs.put(changedFilename, diff(changedFilename, incomingFileContents, outgoingFileContents));
+			}
+		}
+		for(String addedFilename : this.addedFilenames){
+			String fileContents = pfrOut.getCompilationUnitContents().get(addedFilename);
+			this.diffs.put(addedFilename, diff(addedFilename, "", fileContents));
+		}
+		for(String removedFilename : this.removedFilenames){
+			String fileContents = pfrIn.getCompilationUnitContents().get(removedFilename);
+			this.diffs.put(removedFilename, diff(removedFilename, fileContents, ""));
+		}
+		//diffs is now initialized with the diffs of the changed files, added files, and removed files
 	}
 
 	/**
 	 * Open the window.
 	 */
-	public void open() {
+	public void open() {		
 		Display display = Display.getDefault();
 		Shell shell = new Shell();
 		shell.setSize(450, 300);
-		shell.setText("Showing diff of Activity");
+		try {
+			shell.setText("Showing diff of " + this.activity_.getAgendaItem().getStep().getName());
+		} catch (AMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(0, 0, 448, 275);
@@ -135,40 +164,43 @@ public class DiffViewerWindow {
 		final org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(composite, SWT.BORDER);
 		list.setBounds(0, 0, 144, 275);
 
-		if(changes){
-			System.out.println("The files we're considering are: ");
-			for(String changedFilename : this.changedFilenames){
-				System.out.println(changedFilename);
-			}
-			
-			//add the filenames to the list on the left
-			for(String changedFilename : this.changedFilenames){
-				list.add(changedFilename);
-			}
-
+		//add the changed filenames to the list on the left
+		for(String changedFilename : this.changedFilenames){
+			list.add("<> " + changedFilename);
+		}
+		
+		for(String addedFilename : this.addedFilenames){
+			list.add("+ " + addedFilename);
+		}
+		
+		for(String removedFilename: this.removedFilenames){
+			list.add("- " + removedFilename);
+		}
+		
+		
+		if(this.changedFilenames.size() + this.addedFilenames.size() + this.removedFilenames.size() > 0){
 			//set up the selection listener (when an item is selected, show the diff in the styled box on the right.
 			list.addSelectionListener(new SelectionListener() {
 				public void widgetSelected(SelectionEvent event) {
-					//this works because our list is a single select
-					int selectedIndex = list.getSelectionIndices()[0];
-					styledText.setText(diffs.get(changedFilenames.get(selectedIndex)));
-
+					//split on space because the items look like "<> filename", "- filename" and "+ filename"
+					String selectedFilename = list.getItem(list.getSelectionIndex()).split(" ")[1];
+					styledText.setText(diffs.get(selectedFilename));
 				}
 
 				public void widgetDefaultSelected(SelectionEvent event) {
-					//don't know what this "default" business is but it has to be implemented
 					widgetSelected(event);
 				}
 			});
-
-			//set up the default
+			
+			//set the default to the first item in the list
 			list.select(0);
-			styledText.setText(diffs.get(changedFilenames.get(0)));
+			String selectedFilename = list.getItem(0).split(" ")[1];
+			styledText.setText(diffs.get(selectedFilename));
 		} else {
 			//there are no changes to show.
 			composite.dispose();
 			Label label = new Label(shell, SWT.None);
-			label.setText("there are no differences to show");
+			label.setText("there are no changed files to show");
 			label.pack();
 		}
 
@@ -201,12 +233,37 @@ public class DiffViewerWindow {
 
 		Patch patch = DiffUtils.diff(file1list, file2list);
 
-		List<String> unified = DiffUtils.generateUnifiedDiff(filename, filename, file2list, patch, 2);
+		List<String> unified = DiffUtils.generateUnifiedDiff(filename, filename, file1list, patch, 3);
 
 		String ret = "";
 		for(String str : unified){
 			ret += str + "\r\n";
 		}
 		return ret;
+	}
+	
+	public void print(){
+		System.out.println();
+		try {
+			System.out.println(this.activity_.getAgendaItem().getStep().getName());
+		} catch (AMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Changed Files: ");
+		for(String changedFilename : this.changedFilenames){
+			System.out.println(changedFilename);
+		}
+		
+		System.out.println("Added Files: ");
+		for(String addedFilename : this.addedFilenames){
+			System.out.println(addedFilename);
+		}
+		
+		System.out.println("Removed Files: ");
+		for(String removedFilename : this.removedFilenames){
+			System.out.println(removedFilename);
+		}
+		System.out.println();
 	}
 }

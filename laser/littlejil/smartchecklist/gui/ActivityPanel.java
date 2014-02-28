@@ -314,7 +314,6 @@ public class ActivityPanel implements PropertyChangeListener
     				activityNoteButton_.setLayoutData(actNoteBtnGridData);
     				activityNoteButton_.addMouseListener(new MouseAdapter() {
     					public void mouseDown(MouseEvent e) {
-    						System.out.println("Diff Viewer Requested!");
     						DiffViewerWindow diffViewerWindow = new DiffViewerWindow(activity_);
     						diffViewerWindow.open();
     					}
