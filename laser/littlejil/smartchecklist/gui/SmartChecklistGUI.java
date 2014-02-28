@@ -26,7 +26,7 @@ public class SmartChecklistGUI {
 	 * The main window of the smart checklist application
 	 */
 	private Shell shell_;
-	private PatientInfoPanel patientInfoPanel_;
+	private StepInfoPanel patientInfoPanel_;
 	private ProcessPanel processPanel_;
 
 	/**
@@ -44,7 +44,7 @@ public class SmartChecklistGUI {
 		this.shell_.setText(TITLE);
 		this.shell_.setMinimumSize(GUI_WIDTH, GUI_HEIGHT);
 		this.shell_.setLayout(new GridLayout());
-		this.patientInfoPanel_ = new PatientInfoPanel(this);
+		this.patientInfoPanel_ = new StepInfoPanel(this);
 		this.processPanel_ = new ProcessPanel(this);
 		createHelpMenu();
 		this.shell_.pack();
@@ -71,7 +71,7 @@ public class SmartChecklistGUI {
 		this.shell_.setText(TITLE);
 		this.shell_.setMinimumSize(GUI_WIDTH, GUI_HEIGHT);
 		this.shell_.setLayout(new GridLayout());
-		this.patientInfoPanel_ = new PatientInfoPanel(this);
+		this.patientInfoPanel_ = new StepInfoPanel(this);
 		this.processPanel_ = new ProcessPanel(this, eventManager);
 		createHelpMenu();
 		this.shell_.pack();
@@ -113,8 +113,6 @@ public class SmartChecklistGUI {
 
 	public void initialize(String agendaName) {
 		//HACK: The patient info should be looked up
-		Image patientPhoto = new Image(this.shell_.getDisplay(), SmartChecklistGUI.class.getResourceAsStream("images/blankPerson.png"));
-		this.patientInfoPanel_.setPatientInfo(new PatientInfo(patientPhoto, "John Doe", Gender.MALE, 20, "1993-03-03", "12345678"));
 		this.processPanel_.initialize(agendaName);
 	}
 
@@ -142,7 +140,12 @@ public class SmartChecklistGUI {
 		Display.setAppName(TITLE);
 		Display display = new Display();
 		SmartChecklistGUI gui = new SmartChecklistGUI(display);
-		gui.initialize(args[0]);
+		
+		if(args.length == 0)
+			gui.initialize("jkjk");
+		else
+			gui.initialize(args[0]);
+		
 		gui.open();
 		while (! gui.isDisposed()) {
 			if (! display.readAndDispatch ()) display.sleep(); 
