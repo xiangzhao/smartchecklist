@@ -118,6 +118,7 @@ public class DiffViewerWindow {
 		this.changedFilenames = new ArrayList<String>(commonFiles);
 
 		//now populate this diffs hashmap by looping through changed files, added files, and removed files
+		//also remove the common files that didn't change, they are not interesting in the diff
 		this.diffs = new HashMap<String,String>();
 		Iterator<String> changedFilenamesIt = this.changedFilenames.iterator();
 		while(changedFilenamesIt.hasNext()){

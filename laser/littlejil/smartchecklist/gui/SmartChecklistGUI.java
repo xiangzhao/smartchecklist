@@ -25,7 +25,7 @@ public class SmartChecklistGUI {
 	 * The main window of the smart checklist application
 	 */
 	private Shell shell_;
-	private StepInfoPanel stepInfoPanel_;
+	StepInfoPanel stepInfoPanel_;
 	private ProcessPanel processPanel_;
 
 	/**

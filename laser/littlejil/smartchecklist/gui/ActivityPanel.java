@@ -199,13 +199,7 @@ public class ActivityPanel implements PropertyChangeListener
     				
     				activityLabel_.addListener(SWT.MouseDown, new Listener(){
     					public void handleEvent(Event event){
-    						AgendaItemWindow agendaItemWindow = new AgendaItemWindow(activity_);
-							try {
-								agendaItemWindow.open();
-							} catch (AMSException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+    						ActivityPanel.this.getProcessPanel().getGUI().stepInfoPanel_.updateActivity(ActivityPanel.this.activity_);
     					}
     				});
     				
