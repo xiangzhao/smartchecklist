@@ -33,13 +33,17 @@ public class StepInfoPanel {
 
 		this.tabFolder_ = new CTabFolder(this.infoPanel_, SWT.BORDER);
 		this.tabFolder_.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		this.tabFolder_.setBounds(0, 0, 448, 275);
+		this.tabFolder_.setBounds(0, 0, 448, 400);
 		this.tabFolder_.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-
+		this.tabFolder_.setTabHeight(30);
+		
 		this.tabs_ = new ArrayList<StepInfoTabItem>();
 		tabs_.add(new SourceTab(this));
 		tabs_.add(new DiffTab(this));
 		tabs_.add(new RecurrenceTab(this));
+		
+		this.tabFolder_.setSelection(0);
+
 	}
 
 	public void updateActivity(Activity activity){

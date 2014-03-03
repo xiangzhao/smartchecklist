@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import artifacts.PackageFragmentRoot;
+
 import laser.ddg.ProcedureInstanceNode;
 import laser.juliette.runner.ams.AgendaItem;
 
@@ -82,4 +84,6 @@ public interface Activity
 	public AgendaItem getAgendaItem();
 	
 	public List<ProcedureInstanceNode> getProcedureInstanceNodes();
+	
+	public PackageFragmentRoot getMostRecentPFR();
 }

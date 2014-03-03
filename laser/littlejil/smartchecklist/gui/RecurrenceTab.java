@@ -1,10 +1,6 @@
 package laser.littlejil.smartchecklist.gui;
 
-import laser.juliette.ams.AMSException;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Label;
 
 public class RecurrenceTab extends StepInfoTabItem{
 	

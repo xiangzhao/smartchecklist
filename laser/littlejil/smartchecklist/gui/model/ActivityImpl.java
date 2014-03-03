@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import artifacts.PackageFragmentRoot;
+
 import laser.ddg.ProcedureInstanceNode;
 import laser.ddg.ProvenanceData;
 import laser.juliette.ams.AMSException;
@@ -21,6 +23,7 @@ import laser.juliette.ams.AgendaItemListener;
 import laser.juliette.ams.IllegalTransition;
 import laser.juliette.ams.UnknownParameter;
 import laser.juliette.ddgbuilder.DDGBuilder;
+import laser.juliette.ddgbuilder.DataInstanceNode;
 import laser.juliette.ddgbuilder.StepReference;
 import laser.lj.Binding;
 import laser.lj.InterfaceDeclaration;
@@ -669,8 +672,21 @@ public class ActivityImpl implements Activity, AgendaItemListener
 		}
 		return res;
 	}
-	
-	//
-	// End of AgendaItemListener methods
-	//
+
+	@Override
+	public PackageFragmentRoot getMostRecentPFR() {
+		DDGBuilder ddgBuilder = (DDGBuilder) agendaItem_.getDdgbuilder();
+		ProvenanceData pd = ddgBuilder.getProvData();
+		
+		Iterator<laser.ddg.DataInstanceNode> dinIter = pd.dinIter();
+		PackageFragmentRoot mostRecent = null;
+		while(dinIter.hasNext()){
+			laser.ddg.DataInstanceNode current = dinIter.next();
+			if(current.getValue() instanceof PackageFragmentRoot){
+				mostRecent = (PackageFragmentRoot)current.getValue();
+			}
+		}
+		
+		return mostRecent;
+	}
 }

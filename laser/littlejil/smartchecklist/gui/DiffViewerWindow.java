@@ -31,7 +31,6 @@ import difflib.Patch;
 import artifacts.PackageFragmentRoot;
 
 public class DiffViewerWindow {
-	//map from changedFilename to diff
 	private HashMap <String,String> diffs;
 	private List<String> changedFilenames;
 	private List<String> addedFilenames;
